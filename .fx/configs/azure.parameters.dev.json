@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceBaseName": {
+      "value": "zhaofengmsdev041f4a"
+    },
+    "bot_aadClientId": {
+      "value": "{{profile.fx-resource-bot.botId}}"
+    },
+    "bot_aadClientSecret": {
+      "value": "{{profile.fx-resource-bot.botPassword}}"
+    },
+    "m365ClientId": {
+      "value": "{{profile.fx-resource-aad-app-for-teams.clientId}}"
+    },
+    "m365ClientSecret": {
+      "value": "{{profile.fx-resource-aad-app-for-teams.clientSecret}}"
+    },
+    "m365TenantId": {
+      "value": "{{profile.fx-resource-aad-app-for-teams.tenantId}}"
+    },
+    "m365OauthAuthorityHost": {
+      "value": "{{profile.fx-resource-aad-app-for-teams.oauthHost}}"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+    "appName": "zhaofengmsg",
+    "projectId": "5408be4b-d6fe-4297-9cd3-fd30af719166",
+    "solutionSettings": {
+        "name": "fx-solution-azure",
+        "version": "1.0.0",
+        "hostType": "Azure",
+        "azureResources": [],
+        "capabilities": [
+            "MessagingExtension"
+        ],
+        "activeResourcePlugins": [
+            "fx-resource-bot",
+            "fx-resource-aad-app-for-teams",
+            "fx-resource-local-debug",
+            "fx-resource-appstudio"
+        ]
+    },
+    "version": "1.0.0",
+    "activeEnvironment": "dev",
+    "isFromSample": false,
+    "programmingLanguage": "typescript"
+}
