@@ -1,40 +1,63 @@
 import { TeamsActivityHandler, CardFactory, TurnContext, AdaptiveCardInvokeValue, AdaptiveCardInvokeResponse, Attachment } from "botbuilder";
-const rawLearnCard = require("./adaptiveCards/learn.json");
+const rawLearnCard = require("./adaptiveCards/join.json");
 const ACData = require("adaptivecards-templating");
 
 export class MessageExtensionBot extends TeamsActivityHandler {
   contents: { [key: string]: any; } = {};
 
-  // Message Extension Code
-  // Action.
-  public async handleTeamsMessagingExtensionSubmitAction(
-    context: TurnContext,
-    action: any
-  ): Promise<any> {
-    switch (action.commandId) {
-      case "createCard":
-        return this.createCardCommand(context, action);
-      default:
-        throw new Error("NotImplemented");
-    }
+  constructor() {
+    super();
+
+    this.onMessage(async (context, next) => {
+      console.log("Running with Message Activity.");
+      if (context.activity.replyToId && this.contents[context.activity.replyToId]) {
+        if (!this.contents[context.activity.replyToId].joined.includes(context.activity.id)) {
+          this.contents[context.activity.replyToId].participators.push({ name: context.activity.value.name });
+          const card = this.renderAdaptiveCard(rawLearnCard, this.contents[context.activity.replyToId]);
+          await context.updateActivity({
+            type: "message",
+            id: context.activity.replyToId,
+            attachments: [card],
+          });
+          this.contents[context.activity.replyToId].joined.push(context.activity.id);
+        }
+      } else {
+        let txt = context.activity.text;
+        txt = TurnContext.removeRecipientMention(
+          context.activity
+        );
+        if (txt) {
+          // Trigger command by IM text
+          const data = { title: txt };
+          const content = {
+            title: data.title,
+            joined: [],
+            participators: [{ name: context.activity.from.name }]
+          };
+          const card = this.renderAdaptiveCard(rawLearnCard, content);
+          const resp = await context.sendActivity({ attachments: [card] });
+          this.contents[resp.id] = content;
+        }
+      }
+
+      // By calling next() you ensure that the next BotHandler is run.
+      await next();
+    });
   }
 
-  public async handleAdaptiveCardAction(
-    context: TurnContext
-  ): Promise<AdaptiveCardInvokeResponse> {
-    const invokeValue = context.activity.value;
-    // The verb "userlike" is sent from the Adaptive Card defined in adaptiveCards/learn.json
-    if (invokeValue.action.verb === "userlike") {
-      this.contents[context.activity.replyToId].participators.push({ name: context.activity.from.name });
-      const card = this.renderAdaptiveCard(rawLearnCard, this.contents[context.activity.replyToId]);
-      await context.updateActivity({
-        type: "message",
-        id: context.activity.replyToId,
-        attachments: [card],
-      });
-      return { statusCode: 200, type: undefined, value: undefined };
-    }
-  }
+  // Message Extension Code
+  // Action.
+  // public async handleTeamsMessagingExtensionSubmitAction(
+  //   context: TurnContext,
+  //   action: any
+  // ): Promise<any> {
+  //   switch (action.commandId) {
+  //     case "createCard":
+  //       return this.createCardCommand(context, action);
+  //     default:
+  //       throw new Error("NotImplemented");
+  //   }
+  // }
 
   // Invoked when an action is taken on an Adaptive Card. The Adaptive Card sends an event to the Bot and this
   // method handles that event.

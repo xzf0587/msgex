@@ -23,41 +23,30 @@
         "full": "Full description of zhaofengmsg-local-debug"
     },
     "accentColor": "#FFFFFF",
-    "bots": [],
-    "composeExtensions": [
+    "bots": [
         {
             "botId": "{{localSettings.bot.botId}}",
-            "commands": [
-                {
-                    "id": "createCard",
-                    "context": [
-                        "compose"
-                    ],
-                    "description": "Command to run action to create a Card from Compose Box",
-                    "title": "Create Card",
-                    "type": "action",
-                    "parameters": [
-                        {
-                            "name": "title",
-                            "title": "Event title",
-                            "description": "Event for the card",
-                            "inputType": "text"
-                        }
-                    ]
-                }
+            "scopes": [
+                "personal",
+                "team",
+                "groupchat"
             ],
-            "messageHandlers": [
+            "supportsFiles": false,
+            "isNotificationOnly": false,
+            "commandLists": [
                 {
-                    "type": "link",
-                    "value": {
-                        "domains": [
-                            "*.botframework.com"
-                        ]
-                    }
+                    "scopes": [
+                        "personal",
+                        "team",
+                        "groupchat"
+                    ],
+                    "commands": [
+                    ]
                 }
             ]
         }
     ],
+    "composeExtensions": [],
     "configurableTabs": [],
     "staticTabs": [],
     "permissions": [

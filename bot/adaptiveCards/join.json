@@ -12,7 +12,7 @@
       "items": [
         {
           "type": "TextBlock",
-          "text": "List of Peers"
+          "text": "Participators"
         },
         {
           "$data": "${participators}",
@@ -26,10 +26,29 @@
   ],
   "actions": [
     {
-      "type": "Action.Execute",
-      "title": "Join!",
-      "verb": "userlike",
-      "fallback": "Action.Submit"
+      "type": "Action.ShowCard",
+      "title": "Add!",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "name"
+          },
+          {
+            "type": "Input.Text",
+            "id": "name",
+            "placeholder": "What is your name?",
+            "isRequired": true
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "Join!"
+          }
+        ]
+      }
     }
   ],
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
